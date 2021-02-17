@@ -55,13 +55,39 @@ function createLI(text) {
     appendToLI('button', 'textContent', 'remove');
     return li;
 }
+function alertMe() {
+    const alertMe = document.createElement('div')
+    const header = form.parentNode
+    const button = form.lastElementChild;
+    button.style.backgroundColor = 'red';
+    alertMe.className = 'alert'
+    alertMe.textContent = `You Forgot To Enter a Name!`;
+    header.insertBefore(alertMe, form)
+}
+function removeAlert() {
 
+    const header = form.parentNode
+    const button = form.lastElementChild;
+    const alertMe = document.getElementsByClassName('alert')[0];
+    button.style.backgroundColor = '';
+    // alertMe.className = 'alert'
+
+    header.removeChild(alertMe)
+}
 form.addEventListener('submit', (e) => {
     e.preventDefault();
     const text = input.value;
-    input.value = ''
-    const li = createLI(text)
-    ul.appendChild(li);
+    if (text === '') {
+        alertMe()
+    } else {
+        if (alertMe) {
+            removeAlert()
+        }
+        input.value = ''
+        const li = createLI(text)
+        ul.appendChild(li);
+
+    }
 });
 
 

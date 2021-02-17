@@ -48,13 +48,25 @@ function createLI(text) {
         return element
     }
     const li = document.createElement('li');
+    const select = document.createElement('select');
+
     appendToLI('span', 'textContent', text);
-    appendToLI('label', 'textContent', 'Confirmed')
-        .appendChild(createElement('input', 'type', 'checkbox'));
+    appendToLI('label', 'textContent', 'Are You Coming?').appendChild(select);
+
+    const yes = document.createElement('option')
+    const no = document.createElement('option')
+    const maybe = document.createElement('option')
+    yes.text = 'yes'
+    no.text = 'no'
+    maybe.text = 'maybe'
+    select.add(yes);
+    select.add(no);
+    select.add(maybe);
     appendToLI('button', 'textContent', 'edit');
     appendToLI('button', 'textContent', 'remove');
     return li;
 }
+
 function alertMe() {
     const alertMe = document.createElement('div')
     const header = form.parentNode
@@ -64,6 +76,7 @@ function alertMe() {
     alertMe.textContent = `You Forgot To Enter a Name!`;
     header.insertBefore(alertMe, form)
 }
+
 function removeAlert() {
 
     const header = form.parentNode
@@ -71,24 +84,31 @@ function removeAlert() {
     const alertMe = document.getElementsByClassName('alert')[0];
     button.style.backgroundColor = '';
     // alertMe.className = 'alert'
-
     header.removeChild(alertMe)
 }
 form.addEventListener('submit', (e) => {
     e.preventDefault();
+    const header = form.parentNode
+    const button = form.lastElementChild;
     const text = input.value;
-    if (text === '') {
+    if (text == '' && button.style.backgroundColor != 'red') {
         alertMe()
-    } else {
-        if (alertMe) {
-            removeAlert()
-        }
+    } else if (text === '' && button.style.backgroundColor === 'red') {
+        removeAlert()
+        alertMe()
+    } else if (text != '' && button.style.backgroundColor === 'red') {
         input.value = ''
         const li = createLI(text)
         ul.appendChild(li);
-
+        removeAlert()
+    } else {
+        input.value = ''
+        const li = createLI(text)
+        ul.appendChild(li);
     }
-});
+
+}
+);
 
 
 

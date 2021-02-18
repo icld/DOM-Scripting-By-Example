@@ -6,31 +6,72 @@ const ul = document.getElementById('invitedList');
 
 const div = document.createElement('div');
 const filterLabel = document.createElement('label');
-const filterCheckBox = document.createElement('input')
+const filterSelect = createSelect('--All--', 'yes', 'no', 'maybe')
 
-filterLabel.textContent = `Hide those who haven't responded`;
-filterCheckBox.type = 'checkbox';
+filterLabel.textContent = `What do you want to see?`;
+filterSelect.className = 'select';
 div.appendChild(filterLabel);
-div.appendChild(filterCheckBox);
+div.appendChild(filterSelect);
 mainDiv.insertBefore(div, ul);
 
-filterCheckBox.addEventListener('change', (e) => {
-    const isChecked = e.target.checked;
+const filterSelectOptionList = ['--All--', 'yes', 'no', 'maybe']
+
+function createSelect(o1, o2, o3, o4) {
+    const select = document.createElement('select');
+    let opt1 = document.createElement('option');
+    let opt2 = document.createElement('option');
+    let opt3 = document.createElement('option');
+    let opt4 = document.createElement('option');
+    opt1.value = o1;
+    opt2.value = o2;
+    opt3.value = o3;
+    opt4.value = o4;
+    opt1.text = o1;
+    opt2.text = o2;
+    opt3.text = o3;
+    opt4.text = o4;
+    select.add(opt1);
+    select.add(opt2);
+    select.add(opt3);
+    select.add(opt4);
+    return select;
+}
+
+filterSelect.addEventListener('change', (e) => {
+    const optionValue = e.target.value;
+    // const select = docuent
     const lis = ul.children;
-    if (isChecked) {
+    if (optionValue === '--All--') {
         for (let i = 0; i < lis.length; i++) {
             let li = lis[i];
-            if (li.className === 'responded') {
+            li.style.display = ''
+        }
+    } else if (optionValue === 'yes') {
+        for (let i = 0; i < lis.length; i++) {
+            let li = lis[i];
+            if (li.className === 'respondedYes') {
                 li.style.display = ''
             } else {
                 li.style.display = 'none'
             }
         }
-    } else {
+    } else if (optionValue === 'no') {
         for (let i = 0; i < lis.length; i++) {
             let li = lis[i];
-            li.style.display = ''
-
+            if (li.className === 'respondedNo') {
+                li.style.display = ''
+            } else {
+                li.style.display = 'none'
+            }
+        }
+    } else if (optionValue === 'maybe') {
+        for (let i = 0; i < lis.length; i++) {
+            let li = lis[i];
+            if (li.className === 'respondedMaybe') {
+                li.style.display = ''
+            } else {
+                li.style.display = 'none'
+            }
         }
     }
 });
@@ -48,20 +89,11 @@ function createLI(text) {
         return element
     }
     const li = document.createElement('li');
-    const select = document.createElement('select');
+
 
     appendToLI('span', 'textContent', text);
-    appendToLI('label', 'textContent', 'Are You Coming?').appendChild(select);
+    appendToLI('label', 'textContent', 'Are You Coming?').appendChild(createSelect('Are You Coming?', 'yes', 'no', 'maybe'));
 
-    const yes = document.createElement('option')
-    const no = document.createElement('option')
-    const maybe = document.createElement('option')
-    yes.text = 'yes'
-    no.text = 'no'
-    maybe.text = 'maybe'
-    select.add(yes);
-    select.add(no);
-    select.add(maybe);
     appendToLI('button', 'textContent', 'edit');
     appendToLI('button', 'textContent', 'remove');
     return li;
@@ -113,14 +145,16 @@ form.addEventListener('submit', (e) => {
 
 
 ul.addEventListener('change', (e) => {
-    const checkbox = event.target;
-    const checked = checkbox.checked;
-    const listItem = checkbox.parentNode.parentNode;
+    const select = e.target;
+    const state = e.target.value;
+    const listItem = select.parentNode.parentNode;
 
-    if (checked) {
-        listItem.className = 'responded'
-    } else {
-        listItem.className = ''
+    if (state === 'yes') {
+        listItem.className = 'respondedYes'
+    } else if (state === 'no') {
+        listItem.className = 'respondedNo'
+    } else if (state === 'maybe') {
+        listItem.className = 'respondedMaybe'
     }
 });
 

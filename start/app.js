@@ -6,35 +6,26 @@ const ul = document.getElementById('invitedList');
 
 const div = document.createElement('div');
 const filterLabel = document.createElement('label');
-const filterSelect = createSelect('--All--', 'yes', 'no', 'maybe')
+const filterSelectOptionList = ['--All--', 'yes', 'no', 'maybe']
+const filterSelect = createSelect(filterSelectOptionList)
 
-filterLabel.textContent = `What do you want to see?`;
+filterLabel.textContent = `Show me:`;
 filterSelect.className = 'select';
 div.appendChild(filterLabel);
 div.appendChild(filterSelect);
 mainDiv.insertBefore(div, ul);
 
-const filterSelectOptionList = ['--All--', 'yes', 'no', 'maybe']
-
-function createSelect(o1, o2, o3, o4) {
+// creates a select and several options based on a provided array. adds options to select 
+function createSelect(arr) {
     const select = document.createElement('select');
-    let opt1 = document.createElement('option');
-    let opt2 = document.createElement('option');
-    let opt3 = document.createElement('option');
-    let opt4 = document.createElement('option');
-    opt1.value = o1;
-    opt2.value = o2;
-    opt3.value = o3;
-    opt4.value = o4;
-    opt1.text = o1;
-    opt2.text = o2;
-    opt3.text = o3;
-    opt4.text = o4;
-    select.add(opt1);
-    select.add(opt2);
-    select.add(opt3);
-    select.add(opt4);
-    return select;
+    for (let i = 0; i < arr.length; i++) {
+        let option = document.createElement('option');
+        option.value = arr[i];
+        option.text = arr[i];
+        option.id = arr[i]
+        select.add(option)
+    }
+    return select
 }
 
 filterSelect.addEventListener('change', (e) => {
@@ -89,10 +80,10 @@ function createLI(text) {
         return element
     }
     const li = document.createElement('li');
-
+    const liSelect = ['Are You Coming?', 'yes', 'no', 'maybe']
 
     appendToLI('span', 'textContent', text);
-    appendToLI('label', 'textContent', 'Are You Coming?').appendChild(createSelect('Are You Coming?', 'yes', 'no', 'maybe'));
+    appendToLI('label', 'textContent', 'Are You Coming?').appendChild(createSelect(liSelect));
 
     appendToLI('button', 'textContent', 'edit');
     appendToLI('button', 'textContent', 'remove');
@@ -118,6 +109,8 @@ function removeAlert() {
     // alertMe.className = 'alert'
     header.removeChild(alertMe)
 }
+
+// listens for submit in the form.  provides alert if empty string.  
 form.addEventListener('submit', (e) => {
     e.preventDefault();
     const header = form.parentNode

@@ -146,14 +146,24 @@ div>label {
 
 /* responded */
 
-.responded {
+.respondedYes {
   transition: 0.4s;
   border-color: rgba(88, 183, 205, .9);
 }
 
-.responded label {
+.respondedNo {
+  transition: 0.4s;
+  border-color: rgba(205, 109, 88, 0.9);
+}
+
+.respondedYes label {
   transition: 0.4s;
   color: rgba(88, 183, 205, 1);
+}
+
+.respondedNo label {
+  transition: 0.4s;
+  color: rgb(205, 115, 88);
 }
 
 /* ================================= 
